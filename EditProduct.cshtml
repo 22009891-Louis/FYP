@@ -1,0 +1,50 @@
+﻿@model Product
+
+<div class="container">
+    <div class="my-3">
+        <h2>Edit Products</h2>
+    </div>
+
+    <form asp-controller="Cart" asp-action="EditCart" method="post">
+        <input asp-for="ProdID" hidden /> <!--dont allow users to edit (id is unique)-->
+
+        <div class="col-6 mb-3 form-floating">
+            <input asp-for="ProdName" class="form-control" placeholder="ProdName" />
+            <label asp-for="ProdName">Product Name</label>
+            <span asp-validation-for="ProdName" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3 form-floating">
+            <input asp-for="Price" class="form-control" placeholder="Price" />
+            <label asp-for="Price">Price</label>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 mb-3 form-floating">
+            <input asp-for="Qty" class="form-control" placeholder="Qty" />
+            <label asp-for="Qty">Quantity</label>
+            <span asp-validation-for="Qty" class="text-danger"></span>
+        </div>
+
+        <div class="col-auto mb-3">
+            <button class="btn btn-primary" type="submit">Confirm</button>
+        </div>
+
+        @if (ViewData["Message"] != null)
+        {
+            <div class="form-group row">
+                <div class="col-6">
+                    <div class="alert alert-@ViewData["MsgType"]">
+                        <b>Message: </b>@ViewData["Message"]<br />
+                        @if (!String.IsNullOrEmpty(ViewData["ExecSQL"]?.ToString()))
+                        {
+                            <b>SQL: </b>
+
+                            @ViewData["ExecSQL"]?.ToString()
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+</div>

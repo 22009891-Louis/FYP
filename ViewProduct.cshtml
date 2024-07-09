@@ -1,0 +1,62 @@
+﻿@model List<Product>
+
+@section MoreScripts {
+    <link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#jsProductTable').DataTable({
+                searching: true,
+                ordering: true,
+                paging: true,
+                info: true,
+                lengthMenu: [[5, 10, -1], [5, 10, "All"]]
+
+            });
+        });
+    </script>
+}
+
+<div class="my-3">
+    <h2>Products</h2>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MsgType"]">
+        @TempData["Message"]
+    </div>
+}
+
+<table id="jsProductTable" class="table">
+    <thead>
+        <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th scope="col">Administration</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Product pd in Model)
+        {
+            <tr>
+                <td>@pd.ProdID</td>
+                <td>@pd.ProdName</td>
+                <td>@String.Format("{0:c}", pd.Price)</td>
+                <td>@pd.Qty</td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-controller="Product" asp-action="EditProduct" asp-route-id="@pd.ProdID">Edit</a>
+                        <a asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@pd.ProdID" onClick="return confirm('Are you sure you want to delete the product: @pd.ProdName?')">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
